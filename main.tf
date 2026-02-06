@@ -3,7 +3,7 @@ resource "aws_vpc" "main" {
   instance_tenancy = "default"
 
   tags = {
-    Name = "thejana-vpc"
+    Name = "thejana-vpc-secondary"
   }
 }
 
@@ -12,7 +12,7 @@ resource "aws_subnet" "public_subnet" {
   cidr_block = "10.3.1.0/24"
 
   tags = {
-    Name = "thejana-public-subnet"
+    Name = "thejana-public-subnet-secondary"
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_subnet" "private_subnet" {
   cidr_block = "10.3.2.0/24"
 
   tags = {
-    Name = "thejana-private-subnet"
+    Name = "thejana-private-subnet-secondary"
   }
 }
 
@@ -29,7 +29,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "thejana-igw"
+    Name = "thejana-igw-secondary"
   }
 }
 
@@ -41,7 +41,7 @@ resource "aws_route_table" "public_rt" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = "thejana-public-rt"
+    Name = "thejana-public-rt-secondary"
   }
 }
 
@@ -70,7 +70,7 @@ resource "aws_security_group" "public_sg" {
   }
 
   tags = {
-    Name = "thejana-public-sg"
+    Name = "thejana-public-sg-secondary"
   }
 }
 
@@ -83,6 +83,6 @@ resource "aws_instance" "ec2_instance1" {
   key_name                    = "aws_key_test"
 
   tags = {
-    Name = "thejana-public-instance"
+    Name = "thejana-public-instance-secondary"
   }
 }  

@@ -11,6 +11,8 @@ pipeline {
 
   environment {
     AWS_DEFAULT_REGION = "ap-south-1"
+    AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+    AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
   }
 
   stages {
@@ -18,7 +20,7 @@ pipeline {
     stage('Checkout') {
       steps {
         git branch: 'main',
-            url: 'https://github.com/your-org/terraform-demo.git'
+            url: 'https://github.com/thejana-aet/Jenkins-Terraform-Pipeline.git'
       }
     }
 
@@ -28,13 +30,19 @@ pipeline {
       }
     }
 
+    stage('Terraform Plan') {
+      steps {
+        sh 'terraform plan -out=tfplan'
+      }
+    }
+
     stage('Terraform Apply') {
       when {
         expression { params.ACTION == 'apply' }
       }
       steps {
         input message: 'Create infrastructure?'
-        sh 'terraform apply -auto-approve'
+        sh 'terraform apply -auto-approve tfplan'
       }
     }
 
@@ -46,6 +54,13 @@ pipeline {
         input message: 'Destroy infrastructure?'
         sh 'terraform destroy -auto-approve'
       }
+    }
+  }
+
+  post {
+    always {
+      // Clean up plan file
+      sh 'rm -f tfplan'
     }
   }
 }
