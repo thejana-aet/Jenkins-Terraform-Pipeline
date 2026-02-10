@@ -8,6 +8,6 @@ resource "aws_instance" "ec2_instance1" {
   key_name                    = "aws_key_test"
 
   tags = {
-    Name = "thejana-public-instance-secondary"
+    Name = "thejana-public-instance-2"
   }
 }  
